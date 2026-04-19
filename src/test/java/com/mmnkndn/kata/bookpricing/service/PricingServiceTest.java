@@ -33,4 +33,13 @@ public class PricingServiceTest {
         double price = pricingService.calculatePrice(new int[]{1, 2});
         assertEquals(95.0, price);
     }
+
+    @Test
+    void shouldApplyTenPercentDiscountForThreeDifferentBooks() {
+        PricingService pricingService = new PricingService();
+
+        double price = pricingService.calculatePrice(new int[]{1, 2, 3});
+
+        assertEquals(135.0, price);
+    }
 }
