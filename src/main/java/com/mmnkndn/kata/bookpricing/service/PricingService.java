@@ -1,9 +1,6 @@
 package com.mmnkndn.kata.bookpricing.service;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class PricingService {
 
@@ -20,29 +17,40 @@ public class PricingService {
     }
 
     public double calculatePrice(int[] basket) {
-        if (basket.length == 0) {
-            return 0.0;
-        }
+        if (basket.length == 0) return 0.0;
 
-        Set<Integer> uniqueBooks = new HashSet<>();
+        // Count occurrences
+        Map<Integer, Integer> counts = new HashMap<>();
         for (int book : basket) {
-            uniqueBooks.add(book);
+            counts.put(book, counts.getOrDefault(book, 0) + 1);
         }
 
-        int distinctCount = uniqueBooks.size();
+        double total = 0.0;
 
-        // Only handle case where all books are distinct so far
-        if (distinctCount == basket.length) {
-            double discount = DISCOUNTS.getOrDefault(distinctCount, 0.0);
-            double total = basket.length * BOOK_PRICE;
-            return total * (1 - discount);
+        // Greedy grouping
+        while (!counts.isEmpty()) {
+            Set<Integer> group = new HashSet<>();
+
+            Iterator<Map.Entry<Integer, Integer>> it = counts.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<Integer, Integer> entry = it.next();
+                group.add(entry.getKey());
+
+                // reduce count
+                if (entry.getValue() == 1) {
+                    it.remove();
+                } else {
+                    entry.setValue(entry.getValue() - 1);
+                }
+            }
+
+            int size = group.size();
+            double discount = DISCOUNTS.getOrDefault(size, 0.0);
+            double groupPrice = size * BOOK_PRICE * (1 - discount);
+
+            total += groupPrice;
         }
 
-        // fallback for same books
-        if (distinctCount == 1) {
-            return basket.length * BOOK_PRICE;
-        }
-
-        return 0.0; // temporary fallback
+        return total;
     }
 }
