@@ -1,0 +1,77 @@
+# ========================
+
+# Maven
+
+# ========================
+
+/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# ========================
+
+# IntelliJ IDEA
+
+# ========================
+
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# ========================
+
+# Eclipse (just in case)
+
+# ========================
+
+.project
+.classpath
+.settings/
+
+# ========================
+
+# VS Code (optional)
+
+# ========================
+
+.vscode/
+
+# ========================
+
+# Logs
+
+# ========================
+
+*.log
+
+# ========================
+
+# OS Generated Files
+
+# ========================
+
+.DS_Store
+Thumbs.db
+
+# ========================
+
+# Compiled Files
+
+# ========================
+
+*.class
+
+# ========================
+
+# Temporary Files
+
+# ========================
+
+*.tmp
+*.swp
+*~
