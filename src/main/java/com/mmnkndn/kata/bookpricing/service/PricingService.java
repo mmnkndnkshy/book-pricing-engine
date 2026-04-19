@@ -19,15 +19,14 @@ public class PricingService {
     public double calculatePrice(int[] basket) {
         if (basket.length == 0) return 0.0;
 
-        // Count occurrences
         Map<Integer, Integer> counts = new HashMap<>();
         for (int book : basket) {
             counts.put(book, counts.getOrDefault(book, 0) + 1);
         }
 
-        double total = 0.0;
+        List<Integer> groupSizes = new ArrayList<>();
 
-        // Greedy grouping
+        // Step 1: Greedy grouping → collect group sizes
         while (!counts.isEmpty()) {
             Set<Integer> group = new HashSet<>();
 
@@ -36,7 +35,6 @@ public class PricingService {
                 Map.Entry<Integer, Integer> entry = it.next();
                 group.add(entry.getKey());
 
-                // reduce count
                 if (entry.getValue() == 1) {
                     it.remove();
                 } else {
@@ -44,11 +42,22 @@ public class PricingService {
                 }
             }
 
-            int size = group.size();
-            double discount = DISCOUNTS.getOrDefault(size, 0.0);
-            double groupPrice = size * BOOK_PRICE * (1 - discount);
+            groupSizes.add(group.size());
+        }
 
-            total += groupPrice;
+        // Step 2: Fix (5 + 3) → (4 + 4)
+        while (groupSizes.contains(5) && groupSizes.contains(3)) {
+            groupSizes.remove(Integer.valueOf(5));
+            groupSizes.remove(Integer.valueOf(3));
+            groupSizes.add(4);
+            groupSizes.add(4);
+        }
+
+        // Step 3: Calculate total
+        double total = 0.0;
+        for (int size : groupSizes) {
+            double discount = DISCOUNTS.getOrDefault(size, 0.0);
+            total += size * BOOK_PRICE * (1 - discount);
         }
 
         return total;
