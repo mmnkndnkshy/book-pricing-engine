@@ -54,4 +54,13 @@ public class PricingServiceTest {
         double price = pricingService.calculatePrice(new int[]{1, 2, 3, 4, 5});
         assertEquals(187.5, price);
     }
+
+    @Test
+    void shouldCalculateOptimalPriceForComplexBasket() {
+        PricingService pricingService = new PricingService();
+        double price = pricingService.calculatePrice(
+                new int[]{1,1,2,2,3,3,4,5}
+        );
+        assertEquals(320.0, price);
+    }
 }
