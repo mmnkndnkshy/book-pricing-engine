@@ -5,6 +5,15 @@ public class PricingService {
         if (basket.length == 0) {
             return 0.0;
         }
-        return 50.0;
+
+        if (basket.length == 1) {
+            return 50.0;
+        }
+
+        if (basket.length == 2) {
+            return 100.0;
+        }
+
+        return 0.0; // temporary fallback
     }
 }
