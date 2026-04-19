@@ -16,6 +16,7 @@ public class PricingService {
         DISCOUNTS.put(2, 0.05);
         DISCOUNTS.put(3, 0.10);
         DISCOUNTS.put(4, 0.20);
+        DISCOUNTS.put(5, 0.25);
     }
 
     public double calculatePrice(int[] basket) {
