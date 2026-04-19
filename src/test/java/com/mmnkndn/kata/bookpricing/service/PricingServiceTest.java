@@ -12,4 +12,11 @@ public class PricingServiceTest {
         double price = pricingService.calculatePrice(new int[]{});
         assertEquals(0.0, price);
     }
+
+    @Test
+    void shouldReturnFiftyForSingeBook(){
+        PricingService pricingService = new PricingService();
+        double price = pricingService.calculatePrice(new int[]{1});
+        assertEquals(50.0, price);
+    }
 }
