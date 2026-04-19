@@ -47,4 +47,11 @@ public class PricingServiceTest {
         double price = pricingService.calculatePrice(new int[]{1, 2, 3, 4});
         assertEquals(160.0, price);
     }
+
+    @Test
+    void shouldApplyTwentyFivePercentDiscountForFiveDifferentBooks() {
+        PricingService pricingService = new PricingService();
+        double price = pricingService.calculatePrice(new int[]{1, 2, 3, 4, 5});
+        assertEquals(187.5, price);
+    }
 }
