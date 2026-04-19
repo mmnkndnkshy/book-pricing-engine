@@ -11,7 +11,10 @@ public class PricingService {
         }
 
         if (basket.length == 2) {
-            return 100.0;
+            if (basket[0] != basket[1]) {
+                return 95.0; // 5% discount for different books
+            }
+            return 100.0; // same books
         }
 
         return 0.0; // temporary fallback
