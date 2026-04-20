@@ -5,12 +5,10 @@ info:
   description: API to calculate optimal price for a basket of books
 
 paths:
-  /api/pricing/v1:
+  /api/pricing/v1/calculatePricing:
     post:
       summary: Calculate total price
-      operationId: calculatePrice
-      tags:
-        - Book Pricing
+      operationId: calculatePricing
       requestBody:
         required: true
         content:
@@ -19,7 +17,7 @@ paths:
               $ref: '#/components/schemas/BookPricingRequest'
       responses:
         '200':
-          description: Successful price calculation
+          description: Success
           content:
             application/json:
               schema:
