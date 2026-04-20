@@ -2,6 +2,7 @@ package com.mmnkndn.kata.bookpricing.service;
 
 import com.mmnkndn.kata.bookpricing.domain.Basket;
 import com.mmnkndn.kata.bookpricing.domain.Book;
+import com.mmnkndn.kata.bookpricing.pricing.DynamicProgrammingPricingStrategy;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -9,10 +10,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PricingServiceTest {
+    PricingService pricingService =
+            new PricingService(new DynamicProgrammingPricingStrategy());
 
     @Test
     void shouldReturnZeorWhenBasketIsEmpty() {
-        PricingService pricingService = new PricingService();
         Basket basket = new Basket(
                 List.of()
         );
@@ -22,7 +24,6 @@ public class PricingServiceTest {
 
     @Test
     void shouldReturnFiftyForSingeBook() {
-        PricingService pricingService = new PricingService();
         Basket basket = new Basket(
                 List.of(Book.CLEAN_CODE)
         );
@@ -32,7 +33,6 @@ public class PricingServiceTest {
 
     @Test
     void shouldReturnHundredForTwoSameBooks() {
-        PricingService pricingService = new PricingService();
         Basket basket = new Basket(
                 List.of(Book.CLEAN_CODE,
                         Book.CLEAN_CODE
@@ -43,7 +43,6 @@ public class PricingServiceTest {
 
     @Test
     void shouldApplyFivePercentDiscountForTwoDifferentBooks() {
-        PricingService pricingService = new PricingService();
         Basket basket = new Basket(
                 List.of(Book.CLEAN_CODE,
                         Book.CLEAN_CODER)
@@ -54,7 +53,6 @@ public class PricingServiceTest {
 
     @Test
     void shouldApplyTenPercentDiscountForThreeDifferentBooks() {
-        PricingService pricingService = new PricingService();
         Basket basket = new Basket(
                 List.of(Book.CLEAN_CODE,
                         Book.CLEAN_CODER,
@@ -66,7 +64,6 @@ public class PricingServiceTest {
 
     @Test
     void shouldApplyTwentyPercentDiscountForFourDifferentBooks() {
-        PricingService pricingService = new PricingService();
         Basket basket = new Basket(
                 List.of(Book.CLEAN_CODE,
                         Book.CLEAN_CODER,
@@ -79,7 +76,6 @@ public class PricingServiceTest {
 
     @Test
     void shouldApplyTwentyFivePercentDiscountForFiveDifferentBooks() {
-        PricingService pricingService = new PricingService();
         Basket basket = new Basket(
                 List.of(Book.CLEAN_CODE,
                         Book.CLEAN_CODER,
@@ -93,7 +89,6 @@ public class PricingServiceTest {
 
     @Test
     void shouldCalculateOptimalPriceForComplexBasket() {
-        PricingService pricingService = new PricingService();
         Basket basket = new Basket(
                 List.of(Book.CLEAN_CODE,
                         Book.CLEAN_CODE,
@@ -110,8 +105,6 @@ public class PricingServiceTest {
 
     @Test
     void shouldReturnHundredForTwoSameBooks_usingBasket() {
-
-        PricingService pricingService = new PricingService();
         Basket basket = new Basket(
                 List.of(Book.CLEAN_CODE, Book.CLEAN_CODE)
         );
