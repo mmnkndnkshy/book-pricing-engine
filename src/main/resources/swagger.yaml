@@ -1,0 +1,60 @@
+openapi: 3.0.3
+info:
+  title: Book Pricing API
+  version: 1.0.0
+  description: API to calculate optimal price for a basket of books
+
+paths:
+  /api/pricing/v1:
+    post:
+      summary: Calculate total price
+      operationId: calculatePrice
+      tags:
+        - Book Pricing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookPricingRequest'
+      responses:
+        '200':
+          description: Successful price calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookPricingResponse'
+        '400':
+          description: Invalid request
+
+components:
+  schemas:
+
+    Book:
+      type: string
+      description: Supported book titles
+      enum:
+        - CLEAN_CODE
+        - CLEAN_CODER
+        - CLEAN_ARCHITECTURE
+        - TDD_BY_EXAMPLE
+        - LEGACY_CODE
+
+    BookPricingRequest:
+      type: object
+      required:
+        - books
+      properties:
+        books:
+          type: array
+          description: List of books in the basket
+          items:
+            $ref: '#/components/schemas/Book'
+
+    BookPricingResponse:
+      type: object
+      properties:
+        totalPrice:
+          type: number
+          format: double
+          description: Final calculated price after discounts
