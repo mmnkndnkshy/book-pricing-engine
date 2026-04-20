@@ -2,10 +2,12 @@ package com.mmnkndn.kata.bookpricing.pricing;
 
 import com.mmnkndn.kata.bookpricing.api.model.Book;
 import com.mmnkndn.kata.bookpricing.api.model.BookPricingRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@RequiredArgsConstructor
 @Component("dynamicProgrammingPricingStrategy")
 public class DynamicProgrammingPricingStrategy implements PricingStrategy {
 
@@ -14,10 +16,6 @@ public class DynamicProgrammingPricingStrategy implements PricingStrategy {
     private static final double BOOK_PRICE = 50.0;
 
     private final Map<String, Double> memo = new HashMap<>();
-
-    public DynamicProgrammingPricingStrategy(DiscountPolicy discountPolicy) {
-        this.discountPolicy = discountPolicy;
-    }
 
     @Override
     public double calculatePrice(BookPricingRequest request) {

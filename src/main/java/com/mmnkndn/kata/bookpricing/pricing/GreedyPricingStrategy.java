@@ -3,11 +3,15 @@ package com.mmnkndn.kata.bookpricing.pricing;
 import com.mmnkndn.kata.bookpricing.api.model.BookPricingRequest;
 import com.mmnkndn.kata.bookpricing.api.model.Book;
 import com.mmnkndn.kata.bookpricing.grouping.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@RequiredArgsConstructor
 @Component("greedyPricingStrategy")
+@Primary
 public class GreedyPricingStrategy implements PricingStrategy {
 
     private final DiscountPolicy discountPolicy;
@@ -16,18 +20,6 @@ public class GreedyPricingStrategy implements PricingStrategy {
     private final GroupOptimizer optimizer;
 
     private static final double BOOK_PRICE = 50.0;
-
-    public GreedyPricingStrategy(
-            DiscountPolicy discountPolicy,
-            BookCounter bookCounter,
-            GroupingStrategy groupingStrategy,
-            GroupOptimizer optimizer
-    ) {
-        this.discountPolicy = discountPolicy;
-        this.bookCounter = bookCounter;
-        this.groupingStrategy = groupingStrategy;
-        this.optimizer = optimizer;
-    }
 
     @Override
     public double calculatePrice(BookPricingRequest request) {
