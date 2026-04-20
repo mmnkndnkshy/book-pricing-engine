@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+import static com.mmnkndn.kata.bookpricing.common.BookPricingConstants.BOOK_PRICE;
+
 @RequiredArgsConstructor
 @Component("greedyPricingStrategy")
 @Primary
@@ -19,10 +21,8 @@ public class GreedyPricingStrategy implements PricingStrategy {
     private final GroupingStrategy groupingStrategy;
     private final GroupOptimizer optimizer;
 
-    private static final double BOOK_PRICE = 50.0;
-
     @Override
-    public double calculatePrice(BookPricingRequest request) {
+    public double calculateBookPrice(BookPricingRequest request) {
 
         if (request == null || request.getItems() == null || request.getItems().isEmpty()) {
             return 0.0;
@@ -34,16 +34,17 @@ public class GreedyPricingStrategy implements PricingStrategy {
 
         groupSizes = optimizer.optimize(groupSizes);
 
-        return calculateTotal(groupSizes);
+        return computeFinalPrice(groupSizes);
     }
 
-    private double calculateTotal(List<Integer> groupSizes) {
-        double total = 0.0;
+    private double computeFinalPrice(List<Integer> groupSizes) {
 
-        for (int size : groupSizes) {
-            double discount = discountPolicy.getDiscount(size);
-            total += size * BOOK_PRICE * (1 - discount);
-        }
+        double total = groupSizes.stream()
+                .mapToDouble(size -> {
+                    double discount = discountPolicy.getDiscount(size);
+                    return size * BOOK_PRICE * (1 - discount);
+                })
+                .sum();
 
         return total;
     }

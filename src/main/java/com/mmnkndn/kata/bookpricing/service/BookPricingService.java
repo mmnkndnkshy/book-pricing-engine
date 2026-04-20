@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PricingService {
+public class BookPricingService {
 
     @Qualifier("greedyPricingStrategy")
     private final PricingStrategy pricingStrategy;
 
     private final BookPricingResponseMapper mapper;
 
-    public BookPricingResponse calculatePrice(BookPricingRequest request) {
-        double total = pricingStrategy.calculatePrice(request);
+    public BookPricingResponse calculateBookPrice(BookPricingRequest request) {
+        double total = pricingStrategy.calculateBookPrice(request);
         return mapper.toResponse(request, total);
     }
 }
