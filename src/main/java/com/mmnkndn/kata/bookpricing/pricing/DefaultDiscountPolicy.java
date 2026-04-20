@@ -1,7 +1,10 @@
 package com.mmnkndn.kata.bookpricing.pricing;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Map;
 
+@Component
 public class DefaultDiscountPolicy implements DiscountPolicy {
 
     private static final Map<Integer, Double> DISCOUNTS = Map.of(
