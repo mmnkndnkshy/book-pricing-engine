@@ -1,7 +1,6 @@
 package com.mmnkndn.kata.bookpricing.service;
 
 
-import com.mmnkndn.kata.bookpricing.api.model.Book;
 import com.mmnkndn.kata.bookpricing.api.model.BookPricingRequest;
 
 import com.mmnkndn.kata.bookpricing.api.model.BookPricingResponse;
@@ -9,13 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-class PricingServiceTest {
+class BookPricingServiceTest {
 
     @Autowired
     private BookPricingService pricingService;
