@@ -2,10 +2,13 @@ package com.mmnkndn.kata.bookpricing.service;
 
 import com.mmnkndn.kata.bookpricing.domain.Basket;
 import com.mmnkndn.kata.bookpricing.domain.Book;
+import com.mmnkndn.kata.bookpricing.pricing.DefaultDiscountPolicy;
+import com.mmnkndn.kata.bookpricing.pricing.DiscountPolicy;
 
 import java.util.*;
 
 public class PricingService {
+    private final DiscountPolicy discountPolicy = new DefaultDiscountPolicy();
 
     private static final double BOOK_PRICE = 50.0;
 
@@ -87,7 +90,7 @@ public class PricingService {
         double total = 0.0;
 
         for (int size : groupSizes) {
-            double discount = discounts.getOrDefault(size, 0.0);
+            double discount = discountPolicy.getDiscount(size);
             total += size * 50.0 * (1 - discount);
         }
 
