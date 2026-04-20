@@ -1,5 +1,8 @@
 package com.mmnkndn.kata.bookpricing.service;
 
+import com.mmnkndn.kata.bookpricing.domain.Basket;
+import com.mmnkndn.kata.bookpricing.domain.Book;
+
 import java.util.*;
 
 public class PricingService {
@@ -16,33 +19,38 @@ public class PricingService {
         DISCOUNTS.put(5, 0.25);
     }
 
-    public double calculatePrice(int[] basket) {
-        if (basket.length == 0) return 0.0;
+    public double calculatePrice(Basket basket) {
+        if (basket == null || basket.getBooks().isEmpty()) return 0.0;
 
-        Map<Integer, Integer> counts = countBooks(basket);
+        Map<Book, Integer> counts = countBooks(basket.getBooks());
         List<Integer> groupSizes = buildGroups(counts);
         optimizeGroups(groupSizes);
 
         return calculateTotal(groupSizes);
     }
 
-    private Map<Integer, Integer> countBooks(int[] basket) {
-        Map<Integer, Integer> counts = new HashMap<>();
-        for (int book : basket) {
+
+    private Map<Book, Integer> countBooks(List<Book> basket) {
+        Map<Book, Integer> counts = new HashMap<>();
+
+        for (Book book : basket) {
             counts.put(book, counts.getOrDefault(book, 0) + 1);
         }
+
         return counts;
     }
 
-    private List<Integer> buildGroups(Map<Integer, Integer> counts) {
+    private List<Integer> buildGroups(Map<Book, Integer> counts) {
         List<Integer> groupSizes = new ArrayList<>();
 
         while (!counts.isEmpty()) {
-            Set<Integer> group = new HashSet<>();
+            Set<Book> group = new HashSet<>();
 
-            Iterator<Map.Entry<Integer, Integer>> it = counts.entrySet().iterator();
+            Iterator<Map.Entry<Book, Integer>> it = counts.entrySet().iterator();
+
             while (it.hasNext()) {
-                Map.Entry<Integer, Integer> entry = it.next();
+                Map.Entry<Book, Integer> entry = it.next();
+
                 group.add(entry.getKey());
 
                 if (entry.getValue() == 1) {
@@ -68,11 +76,21 @@ public class PricingService {
     }
 
     private double calculateTotal(List<Integer> groupSizes) {
+
+        Map<Integer, Double> discounts = new HashMap<>();
+        discounts.put(1, 0.0);
+        discounts.put(2, 0.05);
+        discounts.put(3, 0.10);
+        discounts.put(4, 0.20);
+        discounts.put(5, 0.25);
+
         double total = 0.0;
+
         for (int size : groupSizes) {
-            double discount = DISCOUNTS.getOrDefault(size, 0.0);
-            total += size * BOOK_PRICE * (1 - discount);
+            double discount = discounts.getOrDefault(size, 0.0);
+            total += size * 50.0 * (1 - discount);
         }
+
         return total;
     }
 }
