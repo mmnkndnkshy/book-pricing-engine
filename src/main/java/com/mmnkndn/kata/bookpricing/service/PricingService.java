@@ -2,7 +2,9 @@ package com.mmnkndn.kata.bookpricing.service;
 
 import com.mmnkndn.kata.bookpricing.domain.Basket;
 import com.mmnkndn.kata.bookpricing.pricing.*;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PricingService {
 
     private final PricingStrategy pricingStrategy;
