@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface GroupingStrategy {
-    List<Integer> group(Map<Book,Integer> counts);
+    List<Integer> group(Map<Book, Integer> counts);
 }
