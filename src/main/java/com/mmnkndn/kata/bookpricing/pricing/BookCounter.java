@@ -1,25 +1,28 @@
 package com.mmnkndn.kata.bookpricing.pricing;
 
-import com.mmnkndn.kata.bookpricing.domain.Book;
+import com.mmnkndn.kata.bookpricing.api.model.Book;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
 public class BookCounter {
 
-    public Map<Book, Integer> count(List<Book> books) {
-        if (books == null || books.isEmpty()) {
+    public Map<Book, Integer> count(Map<String, Integer> items) {
+
+        if (items == null || items.isEmpty()) {
             return Map.of();
         }
 
         Map<Book, Integer> counts = new EnumMap<>(Book.class);
 
-        for (Book book : books) {
-            counts.put(book, counts.getOrDefault(book, 0) + 1);
-        }
+        items.forEach((key, value) -> {
+
+            Book book = Book.valueOf(key); // enum conversion
+
+            counts.put(book, value);
+        });
 
         return counts;
     }

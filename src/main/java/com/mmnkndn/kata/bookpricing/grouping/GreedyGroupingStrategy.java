@@ -1,6 +1,6 @@
 package com.mmnkndn.kata.bookpricing.grouping;
 
-import com.mmnkndn.kata.bookpricing.domain.Book;
+import com.mmnkndn.kata.bookpricing.api.model.Book;
 import org.springframework.stereotype.Component;
 
 import java.util.*;

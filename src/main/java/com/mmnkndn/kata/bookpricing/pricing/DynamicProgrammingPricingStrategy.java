@@ -1,6 +1,7 @@
 package com.mmnkndn.kata.bookpricing.pricing;
 
-import com.mmnkndn.kata.bookpricing.domain.*;
+import com.mmnkndn.kata.bookpricing.api.model.Book;
+import com.mmnkndn.kata.bookpricing.api.model.BookPricingRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -10,20 +11,28 @@ public class DynamicProgrammingPricingStrategy implements PricingStrategy {
 
     private final DiscountPolicy discountPolicy;
 
-    public DynamicProgrammingPricingStrategy(DiscountPolicy discountPolicy) {
-        this.discountPolicy = discountPolicy;
-    }
     private static final double BOOK_PRICE = 50.0;
 
     private final Map<String, Double> memo = new HashMap<>();
 
+    public DynamicProgrammingPricingStrategy(DiscountPolicy discountPolicy) {
+        this.discountPolicy = discountPolicy;
+    }
+
     @Override
-    public double calculatePrice(Basket basket) {
-        int[] counts = toCounts(basket.getBooks());
+    public double calculatePrice(BookPricingRequest request) {
+
+        if (request == null || request.getItems() == null || request.getItems().isEmpty()) {
+            return 0.0;
+        }
+
+        int[] counts = toCounts(request.getItems());
+
         return dp(counts);
     }
 
     private double dp(int[] counts) {
+
         String key = Arrays.toString(counts);
 
         if (memo.containsKey(key)) {
@@ -48,31 +57,40 @@ public class DynamicProgrammingPricingStrategy implements PricingStrategy {
 
             if (indices.size() != size) continue;
 
-            for (int i : indices) counts[i]--;
+            for (int i : indices) {
+                counts[i]--;
+            }
 
             double price = size * BOOK_PRICE * (1 - discountPolicy.getDiscount(size))
                     + dp(counts);
 
             minPrice = Math.min(minPrice, price);
 
-            for (int i : indices) counts[i]++;
+            for (int i : indices) {
+                counts[i]++;
+            }
         }
 
         memo.put(key, minPrice);
         return minPrice;
     }
 
-    private int[] toCounts(List<Book> books) {
+    private int[] toCounts(Map<String, Integer> items) {
+
         int[] counts = new int[5];
 
-        for (Book b : books) {
-            counts[b.ordinal()]++;
+        for (Map.Entry<String, Integer> entry : items.entrySet()) {
+
+            Book book = Book.valueOf(entry.getKey());
+
+            counts[book.ordinal()] = entry.getValue();
         }
 
         return counts;
     }
 
     private List<Integer> pickDistinct(int[] counts, int size) {
+
         List<Integer> result = new ArrayList<>();
 
         for (int i = 0; i < counts.length && result.size() < size; i++) {
@@ -83,6 +101,4 @@ public class DynamicProgrammingPricingStrategy implements PricingStrategy {
 
         return result;
     }
-
-
 }

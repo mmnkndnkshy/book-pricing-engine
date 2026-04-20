@@ -1,11 +1,11 @@
 package com.mmnkndn.kata.bookpricing.pricing;
 
-import com.mmnkndn.kata.bookpricing.domain.*;
+import com.mmnkndn.kata.bookpricing.api.model.BookPricingRequest;
+import com.mmnkndn.kata.bookpricing.api.model.Book;
 import com.mmnkndn.kata.bookpricing.grouping.*;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component("greedyPricingStrategy")
 public class GreedyPricingStrategy implements PricingStrategy {
@@ -30,10 +30,14 @@ public class GreedyPricingStrategy implements PricingStrategy {
     }
 
     @Override
-    public double calculatePrice(Basket basket) {
-        if (basket == null || basket.getBooks().isEmpty()) return 0.0;
+    public double calculatePrice(BookPricingRequest request) {
 
-        Map<Book, Integer> counts = bookCounter.count(basket.getBooks());
+        if (request == null || request.getItems() == null || request.getItems().isEmpty()) {
+            return 0.0;
+        }
+
+        Map<Book, Integer> counts = bookCounter.count(request.getItems());
+
         List<Integer> groupSizes = groupingStrategy.group(counts);
 
         groupSizes = optimizer.optimize(groupSizes);
@@ -51,6 +55,4 @@ public class GreedyPricingStrategy implements PricingStrategy {
 
         return total;
     }
-
-
 }

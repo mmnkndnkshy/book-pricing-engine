@@ -1,9 +1,7 @@
 package com.mmnkndn.kata.bookpricing.api.controller;
 
-import com.mmnkndn.kata.bookpricing.api.mapper.BookPricingMapper;
 import com.mmnkndn.kata.bookpricing.api.model.BookPricingRequest;
 import com.mmnkndn.kata.bookpricing.api.model.BookPricingResponse;
-import com.mmnkndn.kata.bookpricing.domain.Basket;
 import com.mmnkndn.kata.bookpricing.service.PricingService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,14 +17,6 @@ public class BookPricingController {
 
     @PostMapping("/calculatePricing")
     public BookPricingResponse calculatePricing(@RequestBody BookPricingRequest request) {
-
-        Basket basket = BookPricingMapper.toDomain(request);
-
-        double total = pricingService.calculatePrice(basket);
-
-        BookPricingResponse response = new BookPricingResponse();
-        response.setTotalPrice(total);
-
-        return response;
+        return pricingService.calculatePrice(request);
     }
 }
