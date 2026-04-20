@@ -2,6 +2,8 @@ package com.mmnkndn.kata.bookpricing.service;
 
 import com.mmnkndn.kata.bookpricing.domain.Basket;
 import com.mmnkndn.kata.bookpricing.domain.Book;
+import com.mmnkndn.kata.bookpricing.grouping.GreedyGroupingStrategy;
+import com.mmnkndn.kata.bookpricing.grouping.GroupingStrategy;
 import com.mmnkndn.kata.bookpricing.pricing.DefaultDiscountPolicy;
 import com.mmnkndn.kata.bookpricing.pricing.DiscountPolicy;
 
@@ -9,6 +11,8 @@ import java.util.*;
 
 public class PricingService {
     private final DiscountPolicy discountPolicy = new DefaultDiscountPolicy();
+
+    private final GroupingStrategy groupingStrategy = new GreedyGroupingStrategy();
 
     private static final double BOOK_PRICE = 50.0;
 
@@ -26,7 +30,7 @@ public class PricingService {
         if (basket == null || basket.getBooks().isEmpty()) return 0.0;
 
         Map<Book, Integer> counts = countBooks(basket.getBooks());
-        List<Integer> groupSizes = buildGroups(counts);
+        List<Integer> groupSizes = groupingStrategy.group(counts);
         optimizeGroups(groupSizes);
 
         return calculateTotal(groupSizes);
