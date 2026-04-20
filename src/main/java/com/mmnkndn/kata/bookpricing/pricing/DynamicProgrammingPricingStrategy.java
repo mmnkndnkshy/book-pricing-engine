@@ -1,12 +1,18 @@
 package com.mmnkndn.kata.bookpricing.pricing;
 
 import com.mmnkndn.kata.bookpricing.domain.*;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@Component("dynamicProgrammingPricingStrategy")
 public class DynamicProgrammingPricingStrategy implements PricingStrategy {
 
-    private final DiscountPolicy discountPolicy = new DefaultDiscountPolicy();
+    private final DiscountPolicy discountPolicy;
+
+    public DynamicProgrammingPricingStrategy(DiscountPolicy discountPolicy) {
+        this.discountPolicy = discountPolicy;
+    }
     private static final double BOOK_PRICE = 50.0;
 
     private final Map<String, Double> memo = new HashMap<>();

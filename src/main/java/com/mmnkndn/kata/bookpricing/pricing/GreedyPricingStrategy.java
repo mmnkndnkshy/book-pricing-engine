@@ -2,18 +2,32 @@ package com.mmnkndn.kata.bookpricing.pricing;
 
 import com.mmnkndn.kata.bookpricing.domain.*;
 import com.mmnkndn.kata.bookpricing.grouping.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
+@Component("greedyPricingStrategy")
 public class GreedyPricingStrategy implements PricingStrategy {
 
-    private final DiscountPolicy discountPolicy = new DefaultDiscountPolicy();
-    private final BookCounter bookCounter = new BookCounter();
-    private final GroupingStrategy groupingStrategy = new GreedyGroupingStrategy();
-    private final GroupOptimizer optimizer = new GroupOptimizer();
+    private final DiscountPolicy discountPolicy;
+    private final BookCounter bookCounter;
+    private final GroupingStrategy groupingStrategy;
+    private final GroupOptimizer optimizer;
 
     private static final double BOOK_PRICE = 50.0;
+
+    public GreedyPricingStrategy(
+            DiscountPolicy discountPolicy,
+            BookCounter bookCounter,
+            GroupingStrategy groupingStrategy,
+            GroupOptimizer optimizer
+    ) {
+        this.discountPolicy = discountPolicy;
+        this.bookCounter = bookCounter;
+        this.groupingStrategy = groupingStrategy;
+        this.optimizer = optimizer;
+    }
 
     @Override
     public double calculatePrice(Basket basket) {
@@ -22,7 +36,7 @@ public class GreedyPricingStrategy implements PricingStrategy {
         Map<Book, Integer> counts = bookCounter.count(basket.getBooks());
         List<Integer> groupSizes = groupingStrategy.group(counts);
 
-        optimizer.optimize(groupSizes);
+        groupSizes = optimizer.optimize(groupSizes);
 
         return calculateTotal(groupSizes);
     }
