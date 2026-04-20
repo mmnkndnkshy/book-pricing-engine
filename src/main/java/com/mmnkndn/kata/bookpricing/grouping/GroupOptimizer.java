@@ -1,14 +1,23 @@
 package com.mmnkndn.kata.bookpricing.grouping;
 
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class GroupOptimizer {
-    public void optimize(List<Integer> groupSizes) {
-        while (groupSizes.contains(5) && groupSizes.contains(3)) {
-            groupSizes.remove(Integer.valueOf(5));
-            groupSizes.remove(Integer.valueOf(3));
-            groupSizes.add(4);
-            groupSizes.add(4);
+    public List<Integer> optimize(List<Integer> groupSizes) {
+
+        List<Integer> optimized = new ArrayList<>(groupSizes);
+
+        while (optimized.contains(5) && optimized.contains(3)) {
+            optimized.remove(Integer.valueOf(5));
+            optimized.remove(Integer.valueOf(3));
+            optimized.add(4);
+            optimized.add(4);
         }
+
+        return optimized;
     }
 }
