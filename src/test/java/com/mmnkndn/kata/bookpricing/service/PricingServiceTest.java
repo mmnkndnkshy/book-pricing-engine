@@ -2,113 +2,119 @@ package com.mmnkndn.kata.bookpricing.service;
 
 import com.mmnkndn.kata.bookpricing.domain.Basket;
 import com.mmnkndn.kata.bookpricing.domain.Book;
-import com.mmnkndn.kata.bookpricing.pricing.DynamicProgrammingPricingStrategy;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PricingServiceTest {
-    PricingService pricingService =
-            new PricingService(new DynamicProgrammingPricingStrategy());
+@SpringBootTest
+class PricingServiceTest {
+
+    @Autowired
+    private PricingService pricingService;
 
     @Test
-    void shouldReturnZeorWhenBasketIsEmpty() {
-        Basket basket = new Basket(
-                List.of()
-        );
+    void shouldReturnZeroWhenBasketIsEmpty() {
+        Basket basket = new Basket(List.of());
+
         double price = pricingService.calculatePrice(basket);
+
         assertEquals(0.0, price);
     }
 
     @Test
-    void shouldReturnFiftyForSingeBook() {
-        Basket basket = new Basket(
-                List.of(Book.CLEAN_CODE)
-        );
+    void shouldReturnFiftyForSingleBook() {
+        Basket basket = new Basket(List.of(Book.CLEAN_CODE));
+
         double price = pricingService.calculatePrice(basket);
+
         assertEquals(50.0, price);
     }
 
     @Test
     void shouldReturnHundredForTwoSameBooks() {
-        Basket basket = new Basket(
-                List.of(Book.CLEAN_CODE,
-                        Book.CLEAN_CODE
-                ));
+        Basket basket = new Basket(List.of(
+                Book.CLEAN_CODE,
+                Book.CLEAN_CODE
+        ));
+
         double price = pricingService.calculatePrice(basket);
+
         assertEquals(100.0, price);
     }
 
     @Test
     void shouldApplyFivePercentDiscountForTwoDifferentBooks() {
-        Basket basket = new Basket(
-                List.of(Book.CLEAN_CODE,
-                        Book.CLEAN_CODER)
-        );
+        Basket basket = new Basket(List.of(
+                Book.CLEAN_CODE,
+                Book.CLEAN_CODER
+        ));
+
         double price = pricingService.calculatePrice(basket);
+
         assertEquals(95.0, price);
     }
 
     @Test
     void shouldApplyTenPercentDiscountForThreeDifferentBooks() {
-        Basket basket = new Basket(
-                List.of(Book.CLEAN_CODE,
-                        Book.CLEAN_CODER,
-                        Book.CLEAN_ARCHITECTURE)
-        );
+        Basket basket = new Basket(List.of(
+                Book.CLEAN_CODE,
+                Book.CLEAN_CODER,
+                Book.CLEAN_ARCHITECTURE
+        ));
+
         double price = pricingService.calculatePrice(basket);
+
         assertEquals(135.0, price);
     }
 
     @Test
     void shouldApplyTwentyPercentDiscountForFourDifferentBooks() {
-        Basket basket = new Basket(
-                List.of(Book.CLEAN_CODE,
-                        Book.CLEAN_CODER,
-                        Book.CLEAN_ARCHITECTURE,
-                        Book.TDD_BY_EXAMPLE)
-        );
+        Basket basket = new Basket(List.of(
+                Book.CLEAN_CODE,
+                Book.CLEAN_CODER,
+                Book.CLEAN_ARCHITECTURE,
+                Book.TDD_BY_EXAMPLE
+        ));
+
         double price = pricingService.calculatePrice(basket);
+
         assertEquals(160.0, price);
     }
 
     @Test
     void shouldApplyTwentyFivePercentDiscountForFiveDifferentBooks() {
-        Basket basket = new Basket(
-                List.of(Book.CLEAN_CODE,
-                        Book.CLEAN_CODER,
-                        Book.CLEAN_ARCHITECTURE,
-                        Book.TDD_BY_EXAMPLE,
-                        Book.LEGACY_CODE)
-        );
+        Basket basket = new Basket(List.of(
+                Book.CLEAN_CODE,
+                Book.CLEAN_CODER,
+                Book.CLEAN_ARCHITECTURE,
+                Book.TDD_BY_EXAMPLE,
+                Book.LEGACY_CODE
+        ));
+
         double price = pricingService.calculatePrice(basket);
+
         assertEquals(187.5, price);
     }
 
     @Test
     void shouldCalculateOptimalPriceForComplexBasket() {
-        Basket basket = new Basket(
-                List.of(Book.CLEAN_CODE,
-                        Book.CLEAN_CODE,
-                        Book.CLEAN_CODER,
-                        Book.CLEAN_CODER,
-                        Book.CLEAN_ARCHITECTURE,
-                        Book.CLEAN_ARCHITECTURE,
-                        Book.TDD_BY_EXAMPLE,
-                        Book.LEGACY_CODE)
-        );
-        double price = pricingService.calculatePrice(basket);
-        assertEquals(320.0, price);
-    }
+        Basket basket = new Basket(List.of(
+                Book.CLEAN_CODE,
+                Book.CLEAN_CODE,
+                Book.CLEAN_CODER,
+                Book.CLEAN_CODER,
+                Book.CLEAN_ARCHITECTURE,
+                Book.CLEAN_ARCHITECTURE,
+                Book.TDD_BY_EXAMPLE,
+                Book.LEGACY_CODE
+        ));
 
-    @Test
-    void shouldReturnHundredForTwoSameBooks_usingBasket() {
-        Basket basket = new Basket(
-                List.of(Book.CLEAN_CODE, Book.CLEAN_CODE)
-        );
         double price = pricingService.calculatePrice(basket);
-        assertEquals(100.0, price);
+
+        assertEquals(320.0, price);
     }
 }
