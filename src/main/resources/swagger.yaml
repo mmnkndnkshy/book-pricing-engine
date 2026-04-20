@@ -1,13 +1,14 @@
 openapi: 3.0.3
+
 info:
   title: Book Pricing API
   version: 1.0.0
-  description: API to calculate optimal price for a basket of books
+  description: API to calculate optimal price for a basket of books using Greedy / DP strategies
 
 paths:
   /api/pricing/v1/calculatePricing:
     post:
-      summary: Calculate total price
+      summary: Calculate optimal basket price
       operationId: calculatePricing
       requestBody:
         required: true
@@ -17,7 +18,7 @@ paths:
               $ref: '#/components/schemas/BookPricingRequest'
       responses:
         '200':
-          description: Success
+          description: Successful pricing calculation
           content:
             application/json:
               schema:
@@ -30,7 +31,6 @@ components:
 
     Book:
       type: string
-      description: Supported book titles
       enum:
         - CLEAN_CODE
         - CLEAN_CODER
@@ -45,15 +45,75 @@ components:
       properties:
         items:
           type: object
-          description: Map of book to quantity
           additionalProperties:
             type: integer
-
+            minimum: 1
 
     BookPricingResponse:
       type: object
+      required:
+        - basketSummary
+        - pricing
+        - groupBreakdown
       properties:
-        totalPrice:
+        basketSummary:
+          $ref: '#/components/schemas/BasketSummary'
+
+        pricing:
+          $ref: '#/components/schemas/Pricing'
+
+        groupBreakdown:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupPricing'
+
+    BasketSummary:
+      type: object
+      required:
+        - totalItems
+        - uniqueBooks
+      properties:
+        totalItems:
+          type: integer
+        uniqueBooks:
+          type: integer
+
+    Pricing:
+      type: object
+      required:
+        - basePrice
+        - discountAmount
+        - finalPrice
+      properties:
+        basePrice:
           type: number
           format: double
-          description: Final calculated price after discounts
+        discountAmount:
+          type: number
+          format: double
+        finalPrice:
+          type: number
+          format: double
+
+    GroupPricing:
+      type: object
+      required:
+        - groupSize
+        - count
+        - basePrice
+        - discount
+        - finalPrice
+      properties:
+        groupSize:
+          type: integer
+        count:
+          type: integer
+        basePrice:
+          type: number
+          format: double
+        discount:
+          type: number
+          format: double
+        finalPrice:
+          type: number
+          format: double
