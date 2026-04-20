@@ -41,13 +41,14 @@ components:
     BookPricingRequest:
       type: object
       required:
-        - books
+        - items
       properties:
-        books:
-          type: array
-          description: List of books in the basket
-          items:
-            $ref: '#/components/schemas/Book'
+        items:
+          type: object
+          description: Map of book to quantity
+          additionalProperties:
+            type: integer
+
 
     BookPricingResponse:
       type: object
