@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/pricing/v1")
 public class BookPricingController {
 
-    private final PricingService pricingService = new PricingService();
+    private final PricingService pricingService;
+
+    public BookPricingController(PricingService pricingService) {
+        this.pricingService = pricingService;
+    }
 
     @PostMapping("/calculatePricing")
     public BookPricingResponse calculatePricing(@RequestBody BookPricingRequest request) {
