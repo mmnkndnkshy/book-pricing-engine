@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PricingServiceTest {
 
     @Autowired
-    private PricingService pricingService;
+    private BookPricingService pricingService;
 
     private BookPricingRequest buildRequest(Map<String, Integer> items) {
 
@@ -33,7 +33,7 @@ class PricingServiceTest {
     void shouldReturnZeroWhenBasketIsEmpty() {
         BookPricingRequest request = buildRequest(Map.of());
 
-        BookPricingResponse response = pricingService.calculatePrice(request);
+        BookPricingResponse response = pricingService.calculateBookPrice(request);
 
         assertEquals(0.0, response.getPricing().getFinalPrice());
     }
@@ -42,7 +42,7 @@ class PricingServiceTest {
     void shouldReturnFiftyForSingleBook() {
         BookPricingRequest request = buildRequest(Map.of("CLEAN_CODE", 1));
 
-        BookPricingResponse response = pricingService.calculatePrice(request);
+        BookPricingResponse response = pricingService.calculateBookPrice(request);
 
         assertEquals(50.0, response.getPricing().getFinalPrice());
     }
@@ -51,7 +51,7 @@ class PricingServiceTest {
     void shouldReturnHundredForTwoSameBooks() {
         BookPricingRequest request = buildRequest(Map.of("CLEAN_CODE", 2));
 
-        BookPricingResponse response = pricingService.calculatePrice(request);
+        BookPricingResponse response = pricingService.calculateBookPrice(request);
 
         assertEquals(100.0, response.getPricing().getFinalPrice());
     }
@@ -63,7 +63,7 @@ class PricingServiceTest {
                 "CLEAN_CODER", 1
         ));
 
-        BookPricingResponse response = pricingService.calculatePrice(request);
+        BookPricingResponse response = pricingService.calculateBookPrice(request);
 
         assertEquals(95.0, response.getPricing().getFinalPrice());
     }
@@ -76,7 +76,7 @@ class PricingServiceTest {
                 "CLEAN_ARCHITECTURE", 1
         ));
 
-        BookPricingResponse response = pricingService.calculatePrice(request);
+        BookPricingResponse response = pricingService.calculateBookPrice(request);
 
         assertEquals(135.0, response.getPricing().getFinalPrice());
     }
@@ -90,7 +90,7 @@ class PricingServiceTest {
                 "TDD_BY_EXAMPLE",1
         ));
 
-        BookPricingResponse response = pricingService.calculatePrice(request);
+        BookPricingResponse response = pricingService.calculateBookPrice(request);
 
         assertEquals(160.0, response.getPricing().getFinalPrice());
     }
@@ -105,7 +105,7 @@ class PricingServiceTest {
                 "LEGACY_CODE",1
         ));
 
-        BookPricingResponse response = pricingService.calculatePrice(request);
+        BookPricingResponse response = pricingService.calculateBookPrice(request);
 
         assertEquals(187.5, response.getPricing().getFinalPrice());
     }
@@ -120,7 +120,7 @@ class PricingServiceTest {
                 "LEGACY_CODE",1
         ));
 
-        BookPricingResponse response = pricingService.calculatePrice(request);
+        BookPricingResponse response = pricingService.calculateBookPrice(request);
 
         assertEquals(320.0, response.getPricing().getFinalPrice());
     }
